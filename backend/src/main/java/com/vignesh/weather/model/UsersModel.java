@@ -9,7 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class UsersModel {
 
     @Id
-    private String id;
+    @Field("_id")
+    private final String id;
     @Field("username")
     private String username;
     @Field("email")
@@ -23,6 +24,8 @@ public class UsersModel {
 
     public UsersModel(String username, String email, String password) {
         this.id = new ObjectId().toHexString();
+        System.out.println("Here is the id: "+this.id);
+        System.out.println("Here is how it is created: "+new ObjectId().hashCode());
         this.username = username;
         this.email = email;
         this.password = password;
