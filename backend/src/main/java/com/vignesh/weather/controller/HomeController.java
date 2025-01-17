@@ -26,9 +26,9 @@ public class HomeController {
     }
 
     @GetMapping("/freePass")
-    public ResponseEntity<?> checkTheEndPointHere(@RequestBody UsersModel req) {
-        UsersModel user = usersRepo.findByUsername(req.getUsername());
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public void checkTheEndPointHere(@RequestBody UsersModel req) {
+        System.out.println(usersRepo.findByUsername(req.getUsername()));
+
     }
 
 }

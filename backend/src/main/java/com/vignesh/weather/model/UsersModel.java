@@ -10,13 +10,15 @@ public class UsersModel {
 
     @Id
     @Field("_id")
-    private final String id;
+    private String id;
     @Field("username")
     private String username;
     @Field("email")
     private String email;
     @Field("password")
     private String password;
+    @Field("createdAt")
+    private long createdAt;
 
     public UsersModel() {
         this.id = new ObjectId().toHexString();
@@ -24,11 +26,21 @@ public class UsersModel {
 
     public UsersModel(String username, String email, String password) {
         this.id = new ObjectId().toHexString();
-        System.out.println("Here is the id: "+this.id);
-        System.out.println("Here is how it is created: "+new ObjectId().hashCode());
         this.username = username;
         this.email = email;
         this.password = password;
+        this.createdAt = System.currentTimeMillis();
+    }
+
+    public UsersModel(UsersModel user) {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -55,6 +67,14 @@ public class UsersModel {
         this.password = password;
     }
 
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -62,6 +82,7 @@ public class UsersModel {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
