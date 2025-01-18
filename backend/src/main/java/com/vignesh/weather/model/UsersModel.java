@@ -32,9 +32,6 @@ public class UsersModel {
         this.createdAt = System.currentTimeMillis();
     }
 
-    public UsersModel(UsersModel user) {
-    }
-
     public String getId() {
         return id;
     }

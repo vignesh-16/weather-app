@@ -15,12 +15,20 @@ public class HomeController {
     @Autowired
     UsersRepo usersRepo;
 
+    @Autowired
+    UsersController userService;
+
     @GetMapping("/hello")
     public String loginMethod() {
         return "Hello Pookie!!!";
     }
 
-    @GetMapping("/talk")
+    @PostMapping("/signin")
+    public String verifyUser(@RequestBody UsersModel req) {
+        return userService.verifyUser(req.getEmail());
+    }
+
+    @GetMapping("talk")
     public String knowUserName(HttpServletRequest request) {
         return "I see..";
     }
