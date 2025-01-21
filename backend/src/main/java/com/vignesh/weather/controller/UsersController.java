@@ -6,6 +6,9 @@ import com.vignesh.weather.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +21,9 @@ public class UsersController {
     @Autowired
     JwtService jwtService;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UsersModel user) {
         UsersModel newUser = usersCollection.save(new UsersModel(user.getUsername(), user.getEmail(), user.getPassword()));
@@ -26,7 +32,8 @@ public class UsersController {
 
     public String verifyUser (String userEmail) {
         UsersModel user = usersCollection.findByEmail(userEmail);
-        if(user !=  null) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        if(authentication.isAuthenticated()) {
             return jwtService.generateToken(user.getUsername());
         }
         return "User not found!!!";

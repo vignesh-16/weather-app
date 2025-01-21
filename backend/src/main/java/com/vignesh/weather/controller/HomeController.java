@@ -23,7 +23,7 @@ public class HomeController {
         return "Hello Pookie!!!";
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public String verifyUser(@RequestBody UsersModel req) {
         return userService.verifyUser(req.getEmail());
     }
