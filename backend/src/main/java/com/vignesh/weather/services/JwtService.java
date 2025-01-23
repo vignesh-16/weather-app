@@ -22,8 +22,8 @@ public class JwtService {
 
     public JwtService() {
         try {
-            KeyGenerator keygen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keygen.generateKey();
+            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+            SecretKey sk = keyGen.generateKey();
             secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private String extractUserEmail(String token) {
+    public String extractUserEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

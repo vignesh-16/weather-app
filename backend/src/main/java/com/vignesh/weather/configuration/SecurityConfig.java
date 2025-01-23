@@ -1,5 +1,6 @@
 package com.vignesh.weather.configuration;
 
+import com.vignesh.weather.filter.JwtFilter;
 import com.vignesh.weather.services.customUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +23,9 @@ public class SecurityConfig {
 
     @Autowired
     private customUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
@@ -32,6 +37,7 @@ public class SecurityConfig {
         );
         security.formLogin(Customizer.withDefaults());
         security.httpBasic(Customizer.withDefaults());
+        security.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return security.build();
     }
 
