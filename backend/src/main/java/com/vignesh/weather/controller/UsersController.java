@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,17 +25,25 @@ public class UsersController {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UsersModel user) {
-        UsersModel newUser = usersCollection.save(new UsersModel(user.getUsername(), user.getEmail(), user.getPassword()));
+        UsersModel newUser = usersCollection.save(new UsersModel(user.getUsername(), user.getEmail(), encoder.encode(user.getPassword())));
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    public String verifyUser (String userEmail) {
+    public String verifyUser (String userEmail, String userPassword) {
         UsersModel user = usersCollection.findByEmail(userEmail);
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getUsername());
+        System.out.println("::[UsersController]>> Inside for custom /login: "+user.toString());
+        if (user != null) {
+            System.out.println("::[UsersController]>> Pre authenticationManager.authenticate ");
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), userPassword));
+            System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
+            if(authentication.isAuthenticated()) {
+                return jwtService.generateToken(user.getEmail());
+            }
         }
         return "User not found!!!";
     }
