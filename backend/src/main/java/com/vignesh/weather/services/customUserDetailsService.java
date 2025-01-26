@@ -18,7 +18,7 @@ public class customUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("::[customUserDetailsService]>> Request received !!!!"+username);
-        UsersModel user = repo.findByEmail(username);
+        UsersModel user = repo.findByUsername(username);
         System.out.println("::[customUserDetailsService]>> Here is the query result: "+user);
         if(user == null) {
             throw new UsernameNotFoundException("Username not found!!");

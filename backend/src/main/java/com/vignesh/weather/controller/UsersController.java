@@ -39,10 +39,10 @@ public class UsersController {
         System.out.println("::[UsersController]>> Inside for custom /login: "+user.toString());
         if (user != null) {
             System.out.println("::[UsersController]>> Pre authenticationManager.authenticate ");
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), userPassword));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), userPassword));
             System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
             if(authentication.isAuthenticated()) {
-                return jwtService.generateToken(user.getEmail());
+                return jwtService.generateToken(user.getUsername());
             }
         }
         return "User not found!!!";
