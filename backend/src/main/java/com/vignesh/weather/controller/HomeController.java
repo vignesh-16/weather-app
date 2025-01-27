@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/")
@@ -29,10 +30,27 @@ public class HomeController {
         return "Reached the end-point hello!";
     }
 
-    @PostMapping("api/login")
+    @PostMapping("/login")
     public String verifyUser(@RequestBody UsersModel req) {
         System.out.println("::[HomeController]>> Hey here it is: "+req);
         return userService.verifyUser(req.getEmail(), req.getPassword());
+    }
+
+    @PutMapping("/resetPassword")
+    public ResponseEntity<?> resetUserPassword(@RequestParam String userId, @RequestParam String newPassword) {
+        try {
+            HashMap<String, Object> userUpdateResponse = userService.resetUserPassword(userId, newPassword);
+            if (Boolean.TRUE.equals(userUpdateResponse.get("isSuccessfullyChanged"))) {
+                return new ResponseEntity<>(userUpdateResponse.get("updatedUserDetails"), HttpStatus.OK);
+            } else if (userUpdateResponse.get("errorType").toString().contains("Could not find any user with given userId:")) {
+                return new ResponseEntity<>(userUpdateResponse.get("errorType"), HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(userUpdateResponse.get("errorType"), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            log.error("Error while trying to reset user password for: " + userId + " - ", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getAllUser")

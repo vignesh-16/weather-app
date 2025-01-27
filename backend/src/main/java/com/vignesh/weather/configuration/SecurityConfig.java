@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.csrf(AbstractHttpConfigurer::disable);
         security.authorizeHttpRequests(request ->
-                request.requestMatchers("/hello", "/api/login", "user/create")
+                request.requestMatchers("/hello", "/login", "/resetPassword/{userId}", "user/create", "/user/getUserDetails")
                         .permitAll()
                         .anyRequest().authenticated()
         );

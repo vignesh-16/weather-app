@@ -19,6 +19,8 @@ public class UsersModel {
     private String password;
     @Field("createdAt")
     private long createdAt;
+    @Field("modifiedAt")
+    private long modifiedAt;
 
     public UsersModel() {
         this.id = new ObjectId().toHexString();
@@ -72,14 +74,23 @@ public class UsersModel {
         this.createdAt = createdAt;
     }
 
+    public long getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(long modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
     @Override
     public String toString() {
-        return "{" +
+        return "UsersModel{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
                 '}';
     }
 }
