@@ -1,5 +1,6 @@
 package com.vignesh.weather.controller;
 
+import com.vignesh.weather.model.PasswordResetModel;
 import com.vignesh.weather.model.UsersModel;
 import com.vignesh.weather.repository.UsersRepo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,9 +38,9 @@ public class HomeController {
     }
 
     @PutMapping("/resetPassword")
-    public ResponseEntity<?> resetUserPassword(@RequestParam String userId, @RequestParam String newPassword) {
+    public ResponseEntity<?> resetUserPassword(@RequestBody PasswordResetModel params) {
         try {
-            HashMap<String, Object> userUpdateResponse = userService.resetUserPassword(userId, newPassword);
+            HashMap<String, Object> userUpdateResponse = userService.resetUserPassword(params.getUserId(), params.getNewPassword());
             if (Boolean.TRUE.equals(userUpdateResponse.get("isSuccessfullyChanged"))) {
                 return new ResponseEntity<>(userUpdateResponse.get("updatedUserDetails"), HttpStatus.OK);
             } else if (userUpdateResponse.get("errorType").toString().contains("Could not find any user with given userId:")) {
@@ -48,7 +49,7 @@ public class HomeController {
                 return new ResponseEntity<>(userUpdateResponse.get("errorType"), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (Exception e) {
-            log.error("Error while trying to reset user password for: " + userId + " - ", e.getMessage());
+            log.error("Error while trying to reset user password for - params.getUserId() : {} ", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

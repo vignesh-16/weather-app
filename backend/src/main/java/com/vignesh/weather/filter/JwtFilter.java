@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Skip filtering for specific endpoints
-        if (requestURI.equals("/api/login") || requestURI.equals("/user/create") || requestURI.equals("/resetPassword/")) {
+        if (requestURI.equals("/api/login") || requestURI.equals("/user/create") || requestURI.equals("/resetPassword")) {
             System.out.println("::[JwtFilter]>> Skipping validation for route - "+requestURI);
             filterChain.doFilter(request, response);
             return;
