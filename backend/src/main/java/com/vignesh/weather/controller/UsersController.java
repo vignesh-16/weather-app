@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -58,18 +59,36 @@ public class UsersController {
         }
     }
 
-    public String verifyUser (String userEmail, String userPassword) {
-        UsersModel user = usersCollection.findByEmail(userEmail);
-        System.out.println("::[UsersController]>> Inside for custom /login: "+user.toString());
-        if (user != null) {
-            System.out.println("::[UsersController]>> Pre authenticationManager.authenticate ");
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), userPassword));
-            System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
-            if(authentication.isAuthenticated()) {
-                return jwtService.generateToken(user.getUsername());
-            }
+    @GetMapping("/getAllUser")
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            ArrayList<UsersModel> users = (ArrayList<UsersModel>) usersCollection.findAll();
+            return new ResponseEntity<>(users,HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Exception occurred while fetching users from the database: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return "User not found!!!";
+    }
+
+    public String verifyUser (String userEmail, String userPassword) {
+        try {
+            UsersModel user = usersCollection.findByEmail(userEmail);
+            if (user != null) {
+                System.out.println("::[UsersController]>> Inside for custom /login: "+user.toString());
+                System.out.println("::[UsersController]>> Pre authenticationManager.authenticate ");
+                Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), userPassword));
+                System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
+                if(authentication.isAuthenticated()) {
+                    return jwtService.generateToken(user.getUsername());
+                }
+            } else {
+                return "User not found!!!";
+            }
+        } catch (Exception e) {
+            log.error("Exception occurred while verifying user credentials: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     public HashMap<String, Object> resetUserPassword(String userId, String newPassword) {

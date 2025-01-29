@@ -3,7 +3,6 @@ package com.vignesh.weather.controller;
 import com.vignesh.weather.model.PasswordResetModel;
 import com.vignesh.weather.model.UsersModel;
 import com.vignesh.weather.repository.UsersRepo;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -51,17 +49,6 @@ public class HomeController {
         } catch (Exception e) {
             log.error("Error while trying to reset user password for - params.getUserId() : {} ", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/getAllUser")
-    public ResponseEntity<?> getAllUsers() {
-        try {
-            ArrayList<UsersModel> users = (ArrayList<UsersModel>) usersRepo.findAll();
-            return new ResponseEntity<>(users,HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("Exception occurred while fetching users from the database: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
 
