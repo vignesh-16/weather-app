@@ -21,6 +21,12 @@ public class UsersModel {
     private long createdAt;
     @Field("modifiedAt")
     private long modifiedAt;
+    @Field("isVerified")
+    private boolean isVerified;
+    @Field("isActive")
+    private boolean isActive;
+    @Field("dataId")
+    private String dataId;
 
     public UsersModel() {
         this.id = new ObjectId().toHexString();
@@ -81,16 +87,36 @@ public class UsersModel {
     public void setModifiedAt(long modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
+    
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
+    }
 
     @Override
     public String toString() {
-        return "UsersModel{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                '}';
+        return "UsersModel [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
+                + ", createdAt=" + createdAt + ", modifiedAt=" + modifiedAt + ", isVerified=" + isVerified
+                + ", isActive=" + isActive + ", dataId=" + dataId + "]";
     }
+    
 }
