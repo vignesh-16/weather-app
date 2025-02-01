@@ -1,5 +1,6 @@
 package com.vignesh.weather.controller;
 
+import com.vignesh.weather.model.UserDataModel;
 import com.vignesh.weather.model.UsersModel;
 import com.vignesh.weather.repository.UsersRepo;
 import com.vignesh.weather.services.JwtService;
@@ -67,6 +68,18 @@ public class UsersController {
         } catch (Exception e) {
             log.error("Exception occurred while fetching users from the database: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateUserData")
+    public ResponseEntity<?> updateUserData(String userToken, UserDataModel data) {
+        try {
+            String userEmail = jwtService.extractUserEmail(userToken);
+            log.info("Request received to update userdata of :{}", userEmail);
+            return null;
+        } catch (Exception e) {
+            log.error("Error while trying to update user data: {}", e.getMessage());
+            return null;
         }
     }
 

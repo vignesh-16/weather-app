@@ -1,5 +1,6 @@
 package com.vignesh.weather.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -7,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.ArrayList;
 
 @Document(collection = "usersData")
-public class UsersDataModel {
+public class UserDataModel {
     @Id
     @Field("_id")
     private String id;
@@ -17,6 +18,15 @@ public class UsersDataModel {
     private String defaultLocation;
     @Field("keepsTrackOf")
     private ArrayList<String> keepsTrackOf;
+
+    public UserDataModel() {this.id = new ObjectId().toHexString();}
+
+    public UserDataModel(String userId, String defaultLocation, ArrayList<String> keepsTrackOf) {
+        this.id = new ObjectId().toHexString();
+        this.userId = userId;
+        this.defaultLocation = defaultLocation;
+        this.keepsTrackOf = keepsTrackOf;
+    }
 
     public String getId() {
         return id;
