@@ -4,6 +4,7 @@ import com.vignesh.weather.model.UserDataModel;
 import com.vignesh.weather.model.UsersModel;
 import com.vignesh.weather.repository.UsersRepo;
 import com.vignesh.weather.services.JwtService;
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -72,10 +74,10 @@ public class UsersController {
     }
 
     @PostMapping("/updateUserData")
-    public ResponseEntity<?> updateUserData(String userToken, UserDataModel data) {
+    public ResponseEntity<?> updateUserData(@RequestBody  String userId, @RequestBody String data) {
         try {
-            String userEmail = jwtService.extractUserEmail(userToken);
-            log.info("Request received to update userdata of :{}", userEmail);
+            Optional<UsersModel> user = usersCollection.findById(userId);
+            log.info("Request received to update userdata of :{}", user);
             return null;
         } catch (Exception e) {
             log.error("Error while trying to update user data: {}", e.getMessage());
