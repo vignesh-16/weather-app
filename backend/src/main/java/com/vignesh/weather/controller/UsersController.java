@@ -1,7 +1,9 @@
 package com.vignesh.weather.controller;
 
+import com.vignesh.weather.DTO.UserDataDTO;
 import com.vignesh.weather.model.UserDataModel;
 import com.vignesh.weather.model.UsersModel;
+import com.vignesh.weather.repository.UserDataRepo;
 import com.vignesh.weather.repository.UsersRepo;
 import com.vignesh.weather.services.JwtService;
 import org.apache.catalina.User;
@@ -28,6 +30,9 @@ public class UsersController {
     UsersRepo usersCollection;
 
     @Autowired
+    UserDataRepo userDataCollection;
+
+    @Autowired
     JwtService jwtService;
 
     @Autowired
@@ -35,7 +40,7 @@ public class UsersController {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    private static final Logger log = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger log = LoggerFactory.getLogger(UsersController.class);
 
 
     @PostMapping("/create")
@@ -74,14 +79,23 @@ public class UsersController {
     }
 
     @PostMapping("/updateUserData")
-    public ResponseEntity<?> updateUserData(@RequestBody  String userId, @RequestBody String data) {
+    public ResponseEntity<?> updateUserData(@RequestBody UserDataDTO userData) {
         try {
-            Optional<UsersModel> user = usersCollection.findById(userId);
+            Optional<UsersModel> user = usersCollection.findById(userData.getUserId());
             log.info("Request received to update userdata of :{}", user);
-            return null;
+            if (user.isEmpty()) {
+                return new ResponseEntity<>("Could not find any user with provided userId!", HttpStatus.NOT_FOUND);
+            } else {
+                boolean isDataUpdated = updateUserData(userData.getUserId(), userData.getDefaultLocation(), userData.getKeepsTrackOf());
+                if (isDataUpdated) {
+                    return new ResponseEntity<>("User data accepted and updated!", HttpStatus.ACCEPTED);
+                } else {
+                    return new ResponseEntity<>("Could not update user data!", HttpStatus.NOT_MODIFIED);
+                }
+            }
         } catch (Exception e) {
             log.error("Error while trying to update user data: {}", e.getMessage());
-            return null;
+            return new ResponseEntity<>("Error while processing request!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -129,6 +143,31 @@ public class UsersController {
             return result;
         }
         return result;
+    }
+
+    public boolean updateUserData (String userId, String defaultLocation, ArrayList<String> keepTrack) {
+        boolean isUserDataUpdated = false;
+        try {
+            UserDataModel existingUserData = userDataCollection.findByUserId(userId);
+            if (existingUserData != null && (defaultLocation != null || keepTrack !=  null)) {
+                if (defaultLocation != null) {
+                    existingUserData.setDefaultLocation(defaultLocation);
+                }
+                if (keepTrack != null) {
+                    existingUserData.setKeepsTrackOf(keepTrack);
+                }
+                userDataCollection.save(existingUserData);
+                isUserDataUpdated = true;
+            } else {
+                UserDataModel freshUserData = new UserDataModel(userId, defaultLocation, keepTrack);
+                userDataCollection.save(freshUserData);
+                isUserDataUpdated = true;
+            }
+        } catch (Exception e) {
+            log.info("Exception occurred while trying to update user data of user: {} {}", userId, e.getMessage());
+            return false;
+        }
+        return isUserDataUpdated;
     }
 
 }
