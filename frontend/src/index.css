@@ -1,4 +1,7 @@
 body {
+  display: flex;
+  height: 100vh;
+  width: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +13,71 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-section-container {
+  margin: auto;
+}
+
+.user-credentials-section {
+  display: flex;
+  flex-direction: column; 
+}
+
+.user-credentials-section input {
+  height: 2rem;
+  width: 21em;
+  font-size: 1em;
+  display: flex;
+  margin: 5px;
+}
+
+.verify-action-section {
+  display: flex;
+  padding: 5px;
+}
+
+.verify-action-section button {
+  height: 2.3em;
+  font-size: 0.9em;
+}
+
+.login-click {
+  width: 10em;
+  margin-right: 1em;
+}
+
+.forgot-password {
+  width: 13em;
+}
+
+.create-an-account {
+  display: flex;
+  padding: 5px;
+}
+
+.create-an-account button {
+  font-size: 0.9em;
+  height: 3em;
+  width: 24em;
+}
+
+.verify-action-section button, .create-an-account button {
+  border: none;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.verify-action-section button:active, .create-an-account button:active {
+  transform: scale(0.95);
+}
+
+.verify-action-section button:hover, .create-an-account button:hover {
+  background-color: #174dae;
+  color: white;
 }
