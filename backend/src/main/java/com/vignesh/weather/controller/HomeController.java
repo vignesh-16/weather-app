@@ -30,7 +30,7 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public String verifyUser(@RequestBody UsersModel req) {
+    public ResponseEntity<?> verifyUser(@RequestBody UsersModel req) {
         System.out.println("::[HomeController]>> Hey here it is: "+req);
         return userService.verifyUser(req.getEmail(), req.getPassword());
     }

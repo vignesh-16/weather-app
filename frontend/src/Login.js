@@ -1,14 +1,25 @@
 import { useState } from "react";
+import { ENDPOINT } from "./globalVariables";
+import usePost from "./hooks/usePost";
 
 const Login = ()=> {
     const [ userid, setUserId ] = useState(null);
     const [ password, setPassword ] = useState(null);
+    const verifyUser = usePost(ENDPOINT.LOGIN);
 
-    const login = ()=>{
+    const login = async ()=>{
         if((userid !== null && userid !== '') 
             && (password !== null && password !== '')) 
         {
             console.info(`Here are the credentials: userid: ${userid}, password: ${password}`);
+            let loginData = {
+                email: userid,
+                password: password
+            }
+            let response = await verifyUser(loginData);
+            if (response.STATUS === 'SUCCESS' && response.USER_TOKEN) {
+                console.log('Login logic!!!');
+            }
         } else {
             if (userid === null) {
                 setUserId('invalid');

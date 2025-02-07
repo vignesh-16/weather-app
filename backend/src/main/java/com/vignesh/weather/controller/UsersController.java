@@ -99,7 +99,8 @@ public class UsersController {
         }
     }
 
-    public String verifyUser (String userEmail, String userPassword) {
+    public ResponseEntity<?> verifyUser (String userEmail, String userPassword) {
+        HashMap<String, String> result = new HashMap<>();
         try {
             UsersModel user = usersCollection.findByEmail(userEmail);
             if (user != null) {
@@ -108,14 +109,21 @@ public class UsersController {
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), userPassword));
                 System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
                 if(authentication.isAuthenticated()) {
-                    return jwtService.generateToken(user.getUsername());
+                    String userToken = jwtService.generateToken(user.getUsername());
+                    result.put("STATUS", "SUCCESS");
+                    result.put("USER_TOKEN", userToken);
+                    return new ResponseEntity<>(result,HttpStatus.OK);
                 }
             } else {
-                return "User not found!!!";
+                result.put("STATUS", "FAILED");
+                result.put("MESSAGE", "User not found!");
+                return new ResponseEntity<>(result,HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             log.error("Exception occurred while verifying user credentials: {}", e.getMessage());
-            throw new RuntimeException(e);
+            result.put("STATUS","FAILED");
+            result.put("MESSAGE", "Error processing request");
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return null;
     }
