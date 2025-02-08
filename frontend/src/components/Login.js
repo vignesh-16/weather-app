@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { ENDPOINT } from "./globalVariables";
-import usePost from "./hooks/usePost";
+import { ENDPOINT } from "../globalVariables";
+import usePost from "../hooks/usePost";
+import { useNavigate } from 'react-router-dom';
 
 const Login = ()=> {
     const [ userid, setUserId ] = useState(null);
     const [ password, setPassword ] = useState(null);
     const verifyUser = usePost(ENDPOINT.LOGIN);
+    const router = useNavigate();
 
     const login = async ()=>{
         if((userid !== null && userid !== '') 
@@ -19,6 +21,7 @@ const Login = ()=> {
             let response = await verifyUser(loginData);
             if (response.STATUS === 'SUCCESS' && response.USER_TOKEN) {
                 console.log('Login logic!!!');
+                router('/home');
             }
         } else {
             if (userid === null) {
