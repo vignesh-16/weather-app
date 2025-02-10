@@ -62,7 +62,7 @@ public class UserDataModel {
 
     @Override
     public String toString() {
-        return "UsersDataModel{" +
+        return "{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", defaultLocation='" + defaultLocation + '\'' +

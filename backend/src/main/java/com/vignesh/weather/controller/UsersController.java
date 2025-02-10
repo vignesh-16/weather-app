@@ -100,7 +100,7 @@ public class UsersController {
     }
 
     public ResponseEntity<?> verifyUser (String userEmail, String userPassword) {
-        HashMap<String, String> result = new HashMap<>();
+        HashMap<String, Object> result = new HashMap<>();
         try {
             UsersModel user = usersCollection.findByEmail(userEmail);
             if (user != null) {
@@ -110,8 +110,11 @@ public class UsersController {
                 System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
                 if(authentication.isAuthenticated()) {
                     String userToken = jwtService.generateToken(user.getUsername());
+                    UserDataModel userData = fetchUserData(user.getId());
                     result.put("STATUS", "SUCCESS");
+                    result.put("USER", user.getUsername());
                     result.put("USER_TOKEN", userToken);
+                    result.put("USER_DATA", userData);
                     return new ResponseEntity<>(result,HttpStatus.OK);
                 }
             } else {
@@ -176,6 +179,16 @@ public class UsersController {
             return false;
         }
         return isUserDataUpdated;
+    }
+
+    public UserDataModel fetchUserData (String userId) {
+        try {
+            Optional<UserDataModel> userData = Optional.ofNullable(userDataCollection.findByUserId(userId));
+            return userData.orElse(null);
+        } catch (Exception e) {
+            log.error("Error while fetching userData for user: {}, throws {}", userId, e.getMessage());
+            return null;
+        }
     }
 
 }

@@ -15,19 +15,19 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Login />} />
-      </Routes>
-      <Routes>
+
+        <Route path='/' element={<Navigate to="/login" />} />
+  
+        <Route path='/login' element={<Login />} />
+     
         <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-      </Routes>
-      <Routes>
+      
         <Route path='/signup' element={<ProtectedRoute><SignUp /></ProtectedRoute>} />
-      </Routes>
-      <Routes>
+      
         <Route path='/forgotpassword' element={<ProtectedRoute><ResetPassword /></ProtectedRoute>} />
-      </Routes>
-      <Routes>
+      
         <Route path='/myAccount' element={<ProtectedRoute><Account /></ProtectedRoute>} />
+        
       </Routes>
     </Router> 
   );

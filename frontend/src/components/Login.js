@@ -19,8 +19,12 @@ const Login = ()=> {
                 password: password
             }
             let response = await verifyUser(loginData);
-            if (response.STATUS === 'SUCCESS' && response.USER_TOKEN) {
-                console.log('Login logic!!!');
+            if (response.STATUS === 'SUCCESS' && response?.USER_TOKEN) {
+                localStorage.setItem("authToken", response?.USER_TOKEN);
+                localStorage.setItem("userData", response?.USER_DATA)
+                for(let pair in response.USER_DATA) {
+                    console.log(pair, response.USER_DATA[pair]);
+                }
                 router('/home');
             }
         } else {
@@ -36,8 +40,8 @@ const Login = ()=> {
         <>
             <div className="login-section-container">
                 <div className="user-credentials-section">
-                    <input type="text" className={`${userid === 'invalid' ? 'is-invalid' : ''}`} name="userid" id="userid" onChange={ (e)=>{ setUserId(e?.currentTarget?.value) } } placeholder="Enter email or username"></input>
-                    <input type="password" className={`${password === 'invalid' ? 'is-invalid' : ''}`} name="password" id="password" onChange={ (e)=>{ setPassword(e?.currentTarget?.value) } } placeholder="Enter password"></input>
+                    <input type="text" className={`${userid === 'invalid' ? 'is-invalid' : ''}`} name="userid" id="userid" onChange={ (e)=>{ setUserId(e?.currentTarget?.value) } } placeholder="Enter your email"></input>
+                    <input type="password" className={`${password === 'invalid' ? 'is-invalid' : ''}`} name="password" id="password" onChange={ (e)=>{ setPassword(e?.currentTarget?.value) } } placeholder="Enter your password"></input>
                 </div>
                 <div className="verify-action-section">
                     <button className="login-click" onClick={ (e)=>{ e.preventDefault(); login() } }>login</button>
