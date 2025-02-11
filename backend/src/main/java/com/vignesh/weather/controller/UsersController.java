@@ -125,7 +125,11 @@ public class UsersController {
         } catch (Exception e) {
             log.error("Exception occurred while verifying user credentials: {}", e.getMessage());
             result.put("STATUS","FAILED");
-            result.put("MESSAGE", "Error processing request");
+            if (e.getMessage().equalsIgnoreCase("Bad credentials")) {
+                result.put("MESSAGE", "Invalid email or password");
+            } else {
+                result.put("MESSAGE", "Error processing request");
+            }
             return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return null;

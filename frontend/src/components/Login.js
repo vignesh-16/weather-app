@@ -21,11 +21,15 @@ const Login = ()=> {
             let response = await verifyUser(loginData);
             if (response.STATUS === 'SUCCESS' && response?.USER_TOKEN) {
                 localStorage.setItem("authToken", response?.USER_TOKEN);
-                localStorage.setItem("userData", response?.USER_DATA)
+                localStorage.setItem("userData", JSON.stringify(response?.USER_DATA));
                 for(let pair in response.USER_DATA) {
                     console.log(pair, response.USER_DATA[pair]);
                 }
                 router('/home');
+            } else if (response.STATUS === 'FAILED' && response.MESSAGE === 'Invalid email or password') {
+
+            } else {
+                
             }
         } else {
             if (userid === null) {
