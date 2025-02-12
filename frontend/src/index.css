@@ -86,6 +86,27 @@ code {
   color: white;
 }
 
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .home-page-starter {
+  margin: auto;
+  margin-top: 0;
+}
+
+.weather-portion-container {
+  display: flex;
+  width: 80%;
+  margin: auto;
+  background-color: #dbf9ef;
+}
+
+.for-defaultLocation-part {
+  margin: auto;
+}
+
+.for-keepsTrackOf-part {
   margin: auto;
 }

@@ -4,17 +4,21 @@ const Home = ()=> {
     const printUserDetails = ()=> {
         let fields = [];
         for(let detail in userDetails) {
-            let field = <div>{detail}: {userDetails[detail]}</div>;
-            fields.push(field);
+            if (detail === 'defaultLocation' || detail === 'keepsTrackOf') {
+                let field = <div className={`for-${detail}-part`}>Results for: {userDetails[detail]}</div>;
+                fields.push(field);
+            }
         }
         return fields;
     }
     return (
         <>
-            <div className="home-page-starter">
-                <span>Welcome to weather app!</span>
-                <br/>
-                <span>{printUserDetails()}</span>
+            <div className="home-page-container">
+                <div className="home-page-starter">
+                    <span>Welcome to weather app!</span>
+                    <br/>
+                </div>
+                <div className="weather-portion-container">{printUserDetails()}</div>
             </div>
         </>
     )
