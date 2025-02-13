@@ -6,7 +6,7 @@ import com.vignesh.weather.model.UsersModel;
 import com.vignesh.weather.repository.UserDataRepo;
 import com.vignesh.weather.repository.UsersRepo;
 import com.vignesh.weather.services.JwtService;
-import org.apache.catalina.User;
+import com.vignesh.weather.services.WeatherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,9 @@ public class UsersController {
 
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Autowired
+    WeatherService weatherApp;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -110,7 +113,7 @@ public class UsersController {
                 System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
                 if(authentication.isAuthenticated()) {
                     String userToken = jwtService.generateToken(user.getUsername());
-                    UserDataModel userData = fetchUserData(user.getId());
+                    HashMap<String, Object> userData = weatherApp.getDefaultWeatherStatus(user.getId());
                     result.put("STATUS", "SUCCESS");
                     result.put("USER", user.getUsername());
                     result.put("USER_TOKEN", userToken);
