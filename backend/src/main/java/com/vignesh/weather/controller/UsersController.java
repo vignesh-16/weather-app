@@ -113,7 +113,7 @@ public class UsersController {
                 System.out.println("::[UsersController]>> Post authenticationManager.authenticate "+authentication.isAuthenticated());
                 if(authentication.isAuthenticated()) {
                     String userToken = jwtService.generateToken(user.getUsername());
-                    HashMap<String, Object> userData = weatherApp.getDefaultWeatherStatus(user.getId());
+                    HashMap<String, HashMap<String, String>> userData = weatherApp.getDefaultWeatherStatus(user.getId());
                     result.put("STATUS", "SUCCESS");
                     result.put("USER", user.getUsername());
                     result.put("USER_TOKEN", userToken);

@@ -17,20 +17,33 @@ public class WeatherService {
     @Autowired
     UserDataRepo usersData;
 
-    public HashMap<String, Object> getDefaultWeatherStatus(String userid) {
-        HashMap<String, Object> status = new HashMap<>();
+    public HashMap<String, HashMap<String, String>> getDefaultWeatherStatus(String userid) {
+        HashMap<String, HashMap<String, String>> status = new HashMap<>();
+        HashMap<String, String> data = new HashMap<>();
         try {
             UserDataModel userData = usersData.findByUserId(userid);
-            status.put(userData.getDefaultLocation(), "Processing");
-            ArrayList<String> variables = userData.getKeepsTrackOf();
-            for (String weatherDetails : variables) {
-                status.put(weatherDetails, "Processing");
-            }
+            data.put(userData.getDefaultLocation(), "Processing");
+            status.put("defaultLocation", data);
+            status.put("keepsTrackOf", getWeatherConditions(userData.getDefaultLocation() ,userData.getKeepsTrackOf()));
             return status;
         } catch (Exception e) {
             log.error("Error while fetching basic Weather details for user: {}", e.getMessage());
             return null;
         }
+    }
+
+    public HashMap<String, String> getWeatherConditions(String location, ArrayList<String> subsets) {
+        try {
+            HashMap<String, String> data = new HashMap<>();
+            for (String subset : subsets) {
+                data.put(subset, "Processing");
+            }
+            return data;
+        } catch (Exception e) {
+            log.error("Exception occurred while fetching Weather subsets for location: {}", e.getMessage());
+            return null;
+        }
+
     }
 
 }
