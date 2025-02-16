@@ -4,9 +4,15 @@ const Home = ()=> {
     const printUserDetails = ()=> {
         let fields = [];
         for(let detail in userDetails) {
-            if (detail === 'defaultLocation' || detail === 'keepsTrackOf') {
-                let field = <div className={`for-${detail}-part`}>Results for: {userDetails[detail]}</div>;
+            if (detail === 'defaultLocation') {
+                let location = userDetails[detail];
+                let field = <div className={`for-${detail}-part`}>Results for: {JSON.stringify(location)}</div>;
                 fields.push(field);
+            } else if (detail === 'keepsTrackOf') {
+                for(let subset in userDetails[detail]) {
+                    let field = <div className={`for-${subset}-part`}>{subset}: {userDetails[detail][subset]}</div>;
+                    fields.push(field);
+                }
             }
         }
         return fields;
