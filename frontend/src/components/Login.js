@@ -27,9 +27,9 @@ const Login = ()=> {
                 }
                 router('/home');
             } else if (response.STATUS === 'FAILED' && response.MESSAGE === 'Invalid email or password') {
-
+                alert('Username or password is incorrect')
             } else {
-                
+                alert('Something went wrong! Please try again')
             }
         } else {
             if (userid === null) {
