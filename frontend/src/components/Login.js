@@ -2,10 +2,12 @@ import { useState } from "react";
 import { ENDPOINT } from "../globalVariables";
 import usePost from "../hooks/usePost";
 import { useNavigate } from 'react-router-dom';
+import SimplePopup from "./SimplePopup";
 
 const Login = ()=> {
     const [ userid, setUserId ] = useState(null);
     const [ password, setPassword ] = useState(null);
+    const [ showMessage, setShowMessage ] = useState('Hello Popup!');
     const verifyUser = usePost(ENDPOINT.LOGIN);
     const router = useNavigate();
 
@@ -27,9 +29,9 @@ const Login = ()=> {
                 }
                 router('/home');
             } else if (response.STATUS === 'FAILED' && response.MESSAGE === 'Invalid email or password') {
-                alert('Username or password is incorrect')
+                setShowMessage('Invalid user credentials! Please check your email & password')
             } else {
-                alert('Something went wrong! Please try again')
+                setShowMessage('Something went wrong! Please try again!')
             }
         } else {
             if (userid === null) {
@@ -55,6 +57,7 @@ const Login = ()=> {
                     <button className="create-new-acc">Create an account!</button>
                 </div>
             </div>
+            < SimplePopup message={showMessage} />
         </>
     )
 }
