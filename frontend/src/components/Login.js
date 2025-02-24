@@ -29,9 +29,13 @@ const Login = ()=> {
                 }
                 router('/home');
             } else if (response.STATUS === 'FAILED' && response.MESSAGE === 'Invalid email or password') {
-                setShowMessage('Invalid user credentials! Please check your email & password')
+                setShowMessage('Invalid user credentials! Please check your email & password');
+                document.getElementById('simple-popup').classList.add('show');
+                document.getElementsByClassName('popup-dialog')[0].classList.add('show');
             } else {
-                setShowMessage('Something went wrong! Please try again!')
+                setShowMessage('Something went wrong! Please try again!');
+                document.getElementById('simple-popup').classList.add('show');
+                document.getElementsByClassName('popup-dialog')[0].classList.add('show');
             }
         } else {
             if (userid === null) {

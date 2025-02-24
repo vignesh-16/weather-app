@@ -1,6 +1,8 @@
 const SimplePopup = ({message}) => {
     const close = ()=> {
+        document.getElementsByClassName('popup-dialog')[0].classList.remove('show');
         document.getElementById("simple-popup").classList.add("close");
+        document.getElementById('simple-popup').classList.remove("show");
     }
     return (
         <>
