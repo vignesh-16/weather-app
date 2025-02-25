@@ -15,6 +15,8 @@ const Login = ()=> {
         if((userid !== null && userid !== '') 
             && (password !== null && password !== '')) 
         {
+            document.getElementsByClassName('login-click')[0].classList.add('button-blue');
+            document.getElementsByClassName('buffer-container')[0].classList.add('loader');
             console.info(`Here are the credentials: userid: ${userid}, password: ${password}`);
             let loginData = {
                 email: userid,
@@ -27,12 +29,18 @@ const Login = ()=> {
                 for(let pair in response.USER_DATA) {
                     console.log(pair, response.USER_DATA[pair]);
                 }
+                document.getElementsByClassName('buffer-container')[0].classList.remove('loader');
+                document.getElementsByClassName('login-click')[0].classList.remove('button-blue');
                 router('/home');
             } else if (response.STATUS === 'FAILED' && response.MESSAGE === 'Invalid email or password') {
+                document.getElementsByClassName('login-click')[0].classList.remove('button-blue');
+                document.getElementsByClassName('buffer-container')[0].classList.remove('loader');
                 setShowMessage('Invalid user credentials! Please check your email & password');
                 document.getElementById('simple-popup').classList.add('show');
                 document.getElementsByClassName('popup-dialog')[0].classList.add('show');
             } else {
+                document.getElementsByClassName('login-click')[0].classList.remove('button-blue');
+                document.getElementsByClassName('buffer-container')[0].classList.remove('loader');
                 setShowMessage('Something went wrong! Please try again!');
                 document.getElementById('simple-popup').classList.add('show');
                 document.getElementsByClassName('popup-dialog')[0].classList.add('show');
@@ -54,11 +62,17 @@ const Login = ()=> {
                     <input type="password" className={`${password === 'invalid' ? 'is-invalid' : ''}`} name="password" id="password" onChange={ (e)=>{ setPassword(e?.currentTarget?.value) } } placeholder="Enter your password"></input>
                 </div>
                 <div className="verify-action-section">
-                    <button className="login-click" onClick={ (e)=>{ e.preventDefault(); login() } }>login</button>
+                    <button className="login-click" onClick={ (e)=>{ e.preventDefault(); login() } }>
+                        <span className="buffer-container"></span>
+                        login
+                    </button>
                     <button className="forgot-password">Forgot Password?</button>
                 </div>
                 <div className="create-an-account">
-                    <button className="create-new-acc">Create an account!</button>
+                    <button className="create-new-acc">
+                        <span className="buffer-container"></span>
+                        Create an account!
+                    </button>
                 </div>
             </div>
             < SimplePopup message={showMessage} />
