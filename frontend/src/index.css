@@ -168,6 +168,10 @@ code {
   border: none
 }
 
+.close-popup-button:hover {
+  color: #000;
+}
+
 .popup-dialog.show {
   top: -20em;
   animation: drop 0.5s ease forwards;
@@ -183,7 +187,6 @@ code {
 
 .buffer-container {
   display: flex;
-  width: 5px !important;
   position: absolute;
   margin-right: 69px;
 }
@@ -195,8 +198,9 @@ code {
 
 
 .loader {
-  width: 5px;
-  padding: 8px;
+  height: 11px !important;
+  width: 11px !important;
+  padding: 3px;
   aspect-ratio: 1;
   border-radius: 50%;
   background: white;

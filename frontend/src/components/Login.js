@@ -26,9 +26,6 @@ const Login = ()=> {
             if (response.STATUS === 'SUCCESS' && response?.USER_TOKEN) {
                 localStorage.setItem("authToken", response?.USER_TOKEN);
                 localStorage.setItem("userData", JSON.stringify(response?.USER_DATA));
-                for(let pair in response.USER_DATA) {
-                    console.log(pair, response.USER_DATA[pair]);
-                }
                 document.getElementsByClassName('buffer-container')[0].classList.remove('loader');
                 document.getElementsByClassName('login-click')[0].classList.remove('button-blue');
                 router('/home');
@@ -53,7 +50,16 @@ const Login = ()=> {
                 setPassword('invalid');
             }
         }
-    }
+    };
+
+    const forgotPassword = async ()=>{
+        router('/forgotpassword');
+    };
+
+    const creatAnAccount = async()=> {
+        router('/signup');
+    };
+
     return (
         <>
             <div className="login-section-container">
@@ -66,10 +72,10 @@ const Login = ()=> {
                         <span className="buffer-container"></span>
                         login
                     </button>
-                    <button className="forgot-password">Forgot Password?</button>
+                    <button className="forgot-password" onClick={ (e)=>{ e.preventDefault(); forgotPassword() } }>Forgot Password?</button>
                 </div>
                 <div className="create-an-account">
-                    <button className="create-new-acc">
+                    <button className="create-new-acc" onClick={ (e)=>{ e.preventDefault(); creatAnAccount() } }>
                         <span className="buffer-container"></span>
                         Create an account!
                     </button>
