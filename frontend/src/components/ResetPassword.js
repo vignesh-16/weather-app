@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { ENDPOINT } from '../globalVariables';
+import useGet from '../hooks/useGet'
 
 const ResetPassword = ()=> {
 
     const [userEmail, setUserEmail] = useState(null);
     const [showText, setShowText] = useState("Send verification code");
     const [thisStep, setThisStep] = useState('isUserExists')
+    const getUserDetails = useGet(ENDPOINT.GET_USER_INFO);
 
     const nextClick = async()=>{
-        if(thisStep === 'isUserExists') {
-            console.log('Make a back-end call to check if user exists with provided email!');
+        if(thisStep === 'isUserExists' && userEmail !== null) {
+            let response = await getUserDetails(userEmail);
+            console.log('[RESET][INFO] Response from server: ',response);
             setShowText('Confirm verification code');
         } else {
             console.log('Verify the inserted verification code is valid or not');

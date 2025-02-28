@@ -214,3 +214,9 @@ code {
   animation: l3 1s infinite linear;
 }
 @keyframes l3 {to{transform: rotate(1turn)}}
+
+.reset-password-section-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
