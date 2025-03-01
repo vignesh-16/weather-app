@@ -220,3 +220,28 @@ code {
   flex-direction: column;
   margin: auto;
 }
+
+.button {
+  border: none;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #174dae;
+  color: white; 
+}
+
+.next-step-button-holder {
+  width: 100%;
+}
+
+.next-step {
+  width: 25.8em;
+  margin: 5px;
+  height: 2.5rem;
+}
+
+.load-screen-reset-page {
+  display: flex;
+  margin: auto;
+}
