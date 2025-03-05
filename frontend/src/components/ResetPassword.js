@@ -1,23 +1,37 @@
 import { useState } from 'react';
 import { ENDPOINT } from '../globalVariables';
 import useGet from '../hooks/useGet'
+import SimplePopup from './SimplePopup';
 
 const ResetPassword = ()=> {
 
     const [userEmail, setUserEmail] = useState(null);
     const [showText, setShowText] = useState("Confirm Email");
-    const [thisStep, setThisStep] = useState('isUserExists')
+    const [thisStep, setThisStep] = useState('isUserExists');
+    const [showMessage, setShowMessage] = useState('');
     const getUserDetails = useGet(ENDPOINT.GET_USER_INFO);
 
     const nextClick = async()=>{
         document.getElementsByClassName('load-screen-reset-page')[0].classList.add('loader');
         document.getElementsByClassName('next-step')[0].classList.add('button-blue');
+        document.getElementsByClassName('button-label')[0].classList.add('no-display');
         if(thisStep === 'isUserExists' && userEmail !== null) {
             let response = await getUserDetails(userEmail);
             console.log('[RESET][INFO] Response from server: ',response);
-            setShowText('Send verification code');
+            if (response.ERROR) {
+                setShowMessage('No User was found with provided email!');
+                setThisStep('isUserExists');
+                document.getElementById('simple-popup').classList.add('show');
+                document.getElementsByClassName('popup-dialog')[0].classList.add('show');
+                document.getElementsByClassName('load-screen-reset-page')[0].classList.remove('loader');
+                document.getElementsByClassName('next-step')[0].classList.remove('button-blue');
+                document.getElementsByClassName('button-label')[0].classList.remove('no-display');
+                setUserEmail('');
+                setShowText('Verify email again');
+            }
+            
         } else {
-            setShowText('Confirm verification code');
+            //setShowText('Confirm verification code');
             console.log('Verify the inserted verification code is valid or not');
         }
     }
@@ -35,6 +49,7 @@ const ResetPassword = ()=> {
                     </button>
                 </div>
             </div>
+            < SimplePopup message={showMessage} />
         </>
     )
 }

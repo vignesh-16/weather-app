@@ -60,7 +60,7 @@ public class UsersController {
             user = usersCollection.findByEmail(userId);
             user = user == null ? usersCollection.findByUsername(userId) : user;
             if (user == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new HashMap<String, Object>(){{ put("ERROR", true); put("MESSAGE", "USER_NOT_FOUND"); }},HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(user, HttpStatus.OK);
             }

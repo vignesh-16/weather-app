@@ -245,3 +245,7 @@ code {
   display: flex;
   margin: auto;
 }
+
+.no-display {
+  display: none;
+}
