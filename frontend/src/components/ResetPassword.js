@@ -28,6 +28,8 @@ const ResetPassword = ()=> {
                 document.getElementsByClassName('button-label')[0].classList.remove('no-display');
                 setUserEmail('');
                 setShowText('Verify email again');
+            } else {
+                setShowText('Send OTP to mail');
             }
             
         } else {
