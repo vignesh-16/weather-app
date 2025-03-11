@@ -131,8 +131,8 @@ code {
   margin: auto;
   background-color: #e10d0d;
   min-width: 500px;
-  min-height: 150px;
-  border-radius: 1em;
+  min-height: fit-content;
+  border-radius: 0.5rem;
   position: absolute;
 }
 
@@ -146,7 +146,7 @@ code {
 .popup-body-holder {
   display: flex;
   justify-content: center;
-  height: 150px;
+  height: fit-content;
 }
 
 .popup-content-holder {
